@@ -18,8 +18,9 @@ api_data = {'data': [{str(uuid.uuid4()).replace('-', ''): n}
 
 def lag():
     """Add a slight random lag to responses"""
-    return random.randint(0, 3) / 10
-    # return 0
+    return 0
+    # return 0.3
+    # return random.randint(0, 3) / 10
 
 @app.route('/api/list_files', methods=['GET', 'POST'])
 def list_files():
@@ -58,4 +59,4 @@ def download_file(target_file):
     return response
 
 if __name__ == "__main__":
-    app.run(debug=True, threaded=True)
+    app.run(debug=False, threaded=True)
