@@ -31,12 +31,16 @@ async def download(s, url, dest):
 
 
 async def run(s, dest, start=0):
+    urls, more = await list_files(s, start=start)
     while True:
-        urls, more = await list_files(s, start=start)
-        start += len(urls)
         coros = [download(s, url, dest) for url in urls]
-        await asyncio.wait(coros)
-        if not more:
+        if more:
+            start += len(urls)
+            coros.append(list_files(s, start=start))
+            results = await asyncio.gather(*coros)
+            urls, more = results[-1]
+        else:
+            await asyncio.gather(*coros)
             break
 
 
